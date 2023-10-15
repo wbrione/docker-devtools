@@ -19,8 +19,7 @@ RUN apt update && apt upgrade && apt install -y tigervnc-standalone-server dbus-
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "maximized" -v "yes" | \
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "decor" -v "no" | \
     xmlstarlet ed -d "//comment()" > ~/.config/openbox/rc.xml; fi && \
-    if [ ! -f ~/.vnc/xstartup ]; then echo "dbus-launch --exit-with-session openbox" \
-    >> ~/.vnc/xstartup && chmod +x ~/.vnc/xstartup; fi && \
+    echo "dbus-launch --exit-with-session openbox" > ~/.vnc/xstartup && chmod +x ~/.vnc/xstartup && \
     printf "${VPN_PASSWORD}\n${VPN_PASSWORD}\n\n" | vncpasswd && \
     vncserver ${DISPLAY} -name "${APP_TITLE}" -geometry ${GEOMETRY} && \
     websockify -D --web=/usr/share/novnc/ 6080 localhost:5900 && \
