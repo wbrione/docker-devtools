@@ -33,7 +33,7 @@ RUN echo 'test ! -d ~/.config/openbox && mkdir -p ~/.config/openbox; test ! -f ~
     grep -wq "${APP_TITLE}" ~/.config/openbox/rc.xml && grep -wq openbox ~/.vnc/xstartup && \
     vncserver ${DISPLAY} -name "${APP_TITLE}" -geometry ${GEOMETRY} && \
     websockify -D --web=/usr/share/novnc/ 6080 localhost:5900 && \
-    /opt/sqldeveloper/sqldeveloper.sh' > startup.sh && chmod +x startup.sh && \
+    /opt/sqldeveloper/sqldeveloper.sh' > startup.sh && chmod +x startup.sh
 
 ENTRYPOINT [ "bash", "-c", "/app/startup.sh" ]
 
