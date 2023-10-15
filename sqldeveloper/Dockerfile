@@ -10,7 +10,7 @@ ENV XML_NS="http://openbox.org/3.4/rc"
 
 ENV APP_TITLE="Oracle SQL Developer"
 
-ENV VPN_PASSWORD="password"
+ENV VNC_PASSWORD="password"
 
 ENV GEOMETRY="1920x1080"
 
@@ -25,7 +25,7 @@ RUN microdnf update && microdnf install -y yum-utils && yum-config-manager --add
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "maximized" -v "yes" | \
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "decor" -v "no" | \
     xmlstarlet ed -d "//comment()" > ~/.config/openbox/rc.xml; fi && \
-    printf "${VPN_PASSWORD}\n${VPN_PASSWORD}\n\n" | vncpasswd && \
+    printf "${VNC_PASSWORD}\n${VNC_PASSWORD}\n\n" | vncpasswd && \
     if [ ! -f ~/.vnc/xstartup ]; then vncserver ${DISPLAY} && vncserver -kill ${DISPLAY}; \
     echo "dbus-launch --exit-with-session openbox" >> ~/.vnc/xstartup; fi && \
     vncserver ${DISPLAY} -name "${APP_TITLE}" -geometry ${GEOMETRY} && \
