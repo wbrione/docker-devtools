@@ -12,7 +12,7 @@ ENV GEOMETRY="1920x1080"
 
 ENV DISPLAY=":0"
 
-RUN apt update && apt upgrade && apt install -y tigervnc-standalone-server dbus-x11 openbox novnc xmlstarlet kate breeze-icon-theme krusader
+RUN apt update && apt upgrade && apt install -y tigervnc-standalone-server dbus-x11 openbox novnc xmlstarlet kate breeze-icon-theme konsole krusader
 
 RUN echo 'test ! -d ~/.vnc && mkdir ~/.vnc; test ! -d ~/.config/openbox && mkdir -p ~/.config/openbox; \
     test ! -f ~/.vnc/xstartup && echo "dbus-launch --exit-with-session openbox" > ~/.vnc/xstartup && chmod +x ~/.vnc/xstartup; \
@@ -20,7 +20,6 @@ RUN echo 'test ! -d ~/.vnc && mkdir ~/.vnc; test ! -d ~/.config/openbox && mkdir
     xmlstarlet ed -N a=${XML_NS} -s "//a:applications" -t elem -n "application" /etc/xdg/openbox/rc.xml | \
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t attr -n "title" -v "${APP_TITLE}" | \
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "maximized" -v "yes" | \
-    xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "decor" -v "no" | \
     xmlstarlet ed -d "//comment()" > ~/.config/openbox/rc.xml; \
     printf "${VNC_PASSWORD}\n${VNC_PASSWORD}\n\n" | vncpasswd && \
     grep -wq "${APP_TITLE}" ~/.config/openbox/rc.xml && grep -wq openbox ~/.vnc/xstartup && \
