@@ -23,7 +23,7 @@ RUN echo 'test ! -d ~/.vnc && mkdir ~/.vnc; test ! -d ~/.config/openbox && mkdir
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "decor" -v "no" | \
     xmlstarlet ed -d "//comment()" > ~/.config/openbox/rc.xml; \
     printf "${VNC_PASSWORD}\n${VNC_PASSWORD}\n\n" | vncpasswd && \
-    grep -wq "${APP_TITLE}" ~/.config/openbox/rc.xml && grep -wq openbox ~/.vnc/xstartup && \    
+    grep -wq "${APP_TITLE}" ~/.config/openbox/rc.xml && grep -wq openbox ~/.vnc/xstartup && \
     vncserver ${DISPLAY} -name "${APP_TITLE}" -geometry ${GEOMETRY} && \
     websockify -D --web=/usr/share/novnc/ 6080 localhost:5900 && \
     /usr/bin/krusader' > startup.sh && chmod +x startup.sh
