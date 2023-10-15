@@ -21,7 +21,7 @@ RUN echo 'test ! -d ~/.vnc && mkdir ~/.vnc; test ! -d ~/.config/openbox && mkdir
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t attr -n "title" -v "${APP_TITLE}" | \
     xmlstarlet ed -N a=${XML_NS} -s "//a:application[last()]" -t elem -n "maximized" -v "yes" | \
     xmlstarlet ed -d "//comment()" > ~/.config/openbox/rc.xml; \
-    test ! -f /usr/share/novnc/index.html && printf "<html><head><meta http-equiv=\"refresh\" 
+    test ! -f /usr/share/novnc/index.html && printf "<html><head><meta http-equiv=\"refresh\" \
     content=\"0;url=vnc.html?resize=remote\"></head></html>" > /usr/share/novnc/index.html; \
     printf "${VNC_PASSWORD}\n${VNC_PASSWORD}\n\n" | vncpasswd && \
     grep -wq "${APP_TITLE}" ~/.config/openbox/rc.xml && grep -wq openbox ~/.vnc/xstartup && \
