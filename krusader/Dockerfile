@@ -12,7 +12,7 @@ ENV GEOMETRY="1920x1080"
 
 ENV DISPLAY=":0"
 
-RUN apt update && apt upgrade && apt install -y tigervnc-standalone-server dbus-x11 openbox novnc xmlstarlet kate breeze-icon-theme konsole krusader
+RUN apt update && apt upgrade && apt install -y tigervnc-standalone-server dbus-x11 openbox novnc xmlstarlet kate breeze-icon-theme konsole ark krusader
 
 RUN echo 'test ! -d ~/.vnc && mkdir ~/.vnc; test ! -d ~/.config/openbox && mkdir -p ~/.config/openbox; \
     test ! -f ~/.vnc/xstartup && echo "dbus-launch --exit-with-session openbox" > ~/.vnc/xstartup && chmod +x ~/.vnc/xstartup; \
