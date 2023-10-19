@@ -39,11 +39,11 @@ RUN echo "dbus-launch --exit-with-session openbox" > xstartup && chmod +x xstart
 RUN groupadd -g ${APP_GID} ${APP_GROUP} && useradd -d ${APP_DATA} -u ${APP_UID} -g ${APP_GID} ${APP_USER}
 
 RUN echo 'set -x; \
-    id -u ${APP_USER} | grep -q ${APP_UID} || usermod -u ${APP_UID} ${APP_USER}; \
-    id -g ${APP_USER} | grep -q ${APP_GID} || groupmod -g ${APP_GID} ${APP_GROUP}; \
+    id -u ${APP_USER} | grep -qw ${APP_UID} || usermod -u ${APP_UID} ${APP_USER} || exit 1; \
+    id -g ${APP_USER} | grep -qw ${APP_GID} || usermod -g ${APP_GID} ${APP_GROUP} && groupmod -g ${APP_GID} ${APP_GROUP}; \
     CFG_HOME="$(getent passwd ${APP_USER} | cut -d: -f6)"; \
-    test ! -d ${APP_HOME} && mkdir ${APP_HOME}; \
-    test ! -d ${CFG_HOME}/.vnc && mkdir ${CFG_HOME}/.vnc; \
+    test ! -d ${APP_HOME} && mkdir -p ${APP_HOME}; \
+    test ! -d ${CFG_HOME}/.vnc && mkdir -p ${CFG_HOME}/.vnc; \
     test ! -d ${CFG_HOME}/.config/openbox && mkdir -p ${CFG_HOME}/.config/openbox; \
     test ! -f ${CFG_HOME}/.vnc/xstartup && cp /app/xstartup ${CFG_HOME}/.vnc/; \
     test ! -f ${CFG_HOME}/.config/openbox/rc.xml && cp /app/rc.xml ${CFG_HOME}/.config/openbox/; \
