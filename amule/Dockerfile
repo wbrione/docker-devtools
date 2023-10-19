@@ -2,15 +2,13 @@ FROM debian:bullseye-slim
 
 WORKDIR /app
 
-ARG PKG_URL="http://installer.jdownloader.org/JDownloader.jar"
-
 ARG XML_NS="http://openbox.org/3.4/rc"
 
-ENV APP_TITLE="JDownloader 2"
+ENV APP_TITLE="aMule"
 
-ENV APP_USER="jdownloader"
+ENV APP_USER="amule"
 
-ENV APP_GROUP="jdownloader"
+ENV APP_GROUP="amule"
 
 ENV APP_UID="1000"
 
@@ -18,7 +16,7 @@ ENV APP_GID="1000"
 
 ENV APP_DATA="/data"
 
-ENV APP_HOME="${APP_DATA}/.JDownloader"
+ENV APP_HOME="${APP_DATA}/.aMule"
 
 ENV VNC_PASSWORD="password"
 
@@ -28,7 +26,7 @@ ENV DISPLAY=":0"
 
 RUN apt update && apt upgrade -y && apt install -y tigervnc-standalone-server dbus-x11 openbox novnc xmlstarlet
 
-RUN apt install -y sudo openjdk-11-jdk wget && wget ${PKG_URL} && apt remove --auto-remove -y wget
+RUN apt install -y sudo amule
 
 RUN echo "dbus-launch --exit-with-session openbox" > xstartup && chmod +x xstartup && \
     xmlstarlet ed -N a=${XML_NS} -s "//a:applications" -t elem -n "application" /etc/xdg/openbox/rc.xml | \
@@ -44,7 +42,7 @@ RUN echo 'set -x; \
     id -u ${APP_USER} | grep -q ${APP_UID} || usermod -u ${APP_UID} ${APP_USER}; \
     id -g ${APP_USER} | grep -q ${APP_GID} || groupmod -g ${APP_GID} ${APP_GROUP}; \
     CFG_HOME="$(getent passwd ${APP_USER} | cut -d: -f6)"; \
-    test ! -d ${APP_HOME} && mkdir -p ${APP_HOME}; \
+    test ! -d ${APP_HOME} && mkdir ${APP_HOME}; \
     test ! -d ${CFG_HOME}/.vnc && mkdir ${CFG_HOME}/.vnc; \
     test ! -d ${CFG_HOME}/.config/openbox && mkdir -p ${CFG_HOME}/.config/openbox; \
     test ! -f ${CFG_HOME}/.vnc/xstartup && cp /app/xstartup ${CFG_HOME}/.vnc/; \
@@ -55,11 +53,10 @@ RUN echo 'set -x; \
     sudo -u ${APP_USER} websockify -D --web=/usr/share/novnc/ 6080 localhost:5900 || \
     exit 1;' > startup.sh && chmod +x startup.sh
 
-RUN echo 'test ! -f ${APP_HOME}/JDownloader.jar && sudo -u ${APP_USER} cp /app/JDownloader.jar ${APP_HOME}/; \
-    test -f ${APP_HOME}/JDownloader.jar && while true; do sudo -u ${APP_USER} \
-    java -jar ${APP_HOME}/JDownloader.jar -norestart; \
-    sleep 3; done' >> startup.sh
+RUN echo 'sudo -u ${APP_USER} /usr/bin/amule' >> startup.sh
 
 ENTRYPOINT [ "bash", "-c", "/app/startup.sh" ]
 
 EXPOSE 6080
+EXPOSE 4662
+EXPOSE 4672
