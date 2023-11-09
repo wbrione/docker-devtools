@@ -31,7 +31,7 @@ RUN echo 'test ! -d ~/.config/openbox && mkdir -p ~/.config/openbox; test ! -f ~
     test ! -f ~/.vnc/xstartup && vncserver ${DISPLAY} && vncserver -kill ${DISPLAY}; \
     grep -wq openbox ~/.vnc/xstartup || echo "dbus-launch --exit-with-session openbox" >> ~/.vnc/xstartup; \
     grep -wq "${APP_TITLE}" ~/.config/openbox/rc.xml && grep -wq openbox ~/.vnc/xstartup && \
-    vncserver ${DISPLAY} -name "${APP_TITLE}" -geometry ${GEOMETRY} && \
+    rm -f /tmp/.X*-lock && vncserver ${DISPLAY} -name "${APP_TITLE}" -geometry ${GEOMETRY} && \
     websockify -D --web=/usr/share/novnc/ 6080 localhost:5900 && \
     /opt/sqldeveloper/sqldeveloper.sh' > startup.sh && chmod +x startup.sh
 
